@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-@NoArgsConstructorgi
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDto {
     private Long postId; // 게시글 id

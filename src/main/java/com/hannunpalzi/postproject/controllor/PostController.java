@@ -1,6 +1,6 @@
 package com.hannunpalzi.postproject.controllor;
 
-import com.hannunpalzi.postproject.Dto.*;
+import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.service.PostService;
 import com.hannunpalzi.postproject.service.TokenChecker;
