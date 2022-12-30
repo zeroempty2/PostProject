@@ -26,4 +26,20 @@ public class Post extends TimeStamped {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    public Post(String title, String contents, User user){
+        this.title = title;
+        this.contents = contents;
+        this.writer = user.getUsername();
+        this.user = user;
+    }
+
+    public void update(String title, String contents){
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public boolean checkUsernameIsWriter(String username){
+        return this.getWriter().equals(username);
+    }
+
 }
