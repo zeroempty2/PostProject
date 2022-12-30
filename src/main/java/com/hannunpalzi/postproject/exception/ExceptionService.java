@@ -1,10 +1,11 @@
 package com.hannunpalzi.postproject.exception;
 
 import com.hannunpalzi.postproject.dto.StatusResponseDto;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import java.util.Objects;
-
+@Service
 public class ExceptionService {
     public StatusResponseDto getErrorResponse(Exception exception) {
         return StatusResponseDto.ExceptionValueOf(exception);
