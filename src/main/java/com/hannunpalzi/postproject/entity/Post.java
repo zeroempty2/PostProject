@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Post extends Timestamped {
+public class Post extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
