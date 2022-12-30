@@ -1,5 +1,6 @@
 package com.hannunpalzi.postproject.entity;
 
+import com.hannunpalzi.postproject.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,18 @@ public class Comment extends TimeStamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Post post;
+
+    public Comment(CommentRequestDto commentRequestDto, User user, Post post) {
+        this.comment = commentRequestDto.getComment();
+        this.writer = user.getUsername();
+        this.user = user;
+        this.post = post;
+    }
+
+    public void modifiedComment(CommentRequestDto commentRequestDto){
+        this.comment = comment;
+
+    }
+
+
 }
