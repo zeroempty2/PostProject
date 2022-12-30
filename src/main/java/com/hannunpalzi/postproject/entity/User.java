@@ -29,4 +29,7 @@ public class User {
         this.role = role;
     }
 
+    public boolean isvalidPassword(String password) {
+        return this.password.equals(password);
+    }
 }

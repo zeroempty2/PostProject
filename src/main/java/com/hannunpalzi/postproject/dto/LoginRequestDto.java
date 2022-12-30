@@ -2,11 +2,8 @@ package com.hannunpalzi.postproject.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.Pattern;
-
 @Getter
-public class SignupRequestDto {
+public class LoginRequestDto {
     private String username;
     private String password;
-    private String adminToken;
 }
