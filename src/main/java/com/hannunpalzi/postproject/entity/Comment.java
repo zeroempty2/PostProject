@@ -31,10 +31,17 @@ public class Comment extends TimeStamped {
         this.post = post;
     }
 
-    public void modifiedComment(CommentRequestDto commentRequestDto){
+    public Comment(String comment, User user){
         this.comment = comment;
-
+        this.user = user;
     }
 
+    public void updateComment(String comment){
+        this.comment = comment;
+    }
+
+    public boolean checkUserNameIsWriter(String username){
+        return this.getWriter().equals(username);
+    }
 
 }

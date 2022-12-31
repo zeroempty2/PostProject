@@ -1,7 +1,9 @@
 package com.hannunpalzi.postproject.controllor;
 
+import com.hannunpalzi.postproject.dto.CommentDeleteResponseDto;
 import com.hannunpalzi.postproject.dto.CommentRequestDto;
-import com.hannunpalzi.postproject.entity.Comment;
+import com.hannunpalzi.postproject.dto.CommentUpdateResponseDto;
+import com.hannunpalzi.postproject.dto.CommentCreatResponseDto;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.service.CommentService;
 import com.hannunpalzi.postproject.service.TokenChecker;
@@ -20,23 +22,37 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping("/posts/{postId}/comments")
-    public Comment createComment(@PathVariable Long postId , @RequestBody CommentRequestDto commentRequestDto , HttpServletRequest request){
+    public CommentCreatResponseDto createComment(@PathVariable Long postId , @RequestBody CommentRequestDto commentRequestDto , HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         String username = tokenChecker.checkToken(token);
         return commentService.createComment(postId, commentRequestDto, username);
     }
     // 댓글 수정 (일반)
-    @PutMapping("/posts/{postId}/comments/{commentsId}")
-    public Long modifiedComment(@PathVariable Long commentsId , @PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto){
-
-        return null;
-    }
-    // 댓글 삭제 (일반)
-    @DeleteMapping("/post/{postId}/comments/{commentsId}")
-    public Long deleteComment(@PathVariable Long commentsId, HttpServletRequest request, @PathVariable Long postId){
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public CommentUpdateResponseDto updateComment(@PathVariable Long commentId , @PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         String username = tokenChecker.checkToken(token);
-        return commentService.deleteComment(commentsId, username);
+        return commentService.updateComment(commentId, postId, commentRequestDto, username);
     }
-
+    //댓글 수정 (관리자)
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public CommentUpdateResponseDto updateCommentAdmin(@PathVariable Long commentId, @PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        String token = jwtUtil.resolveToken(request);
+        String username = tokenChecker.checkToken(token);
+        return commentService.updateCommentAdmin(commentId, postId, commentRequestDto, username);
+    }
+    // 댓글 삭제 (일반)
+    @DeleteMapping("/post/{postId}/comments/{commentId}")
+    public CommentDeleteResponseDto deleteComment(@PathVariable Long commentId, @PathVariable Long postId, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        String username = tokenChecker.checkToken(token);
+        return commentService.deleteComment(commentId, postId, username);
+    }
+    // 댓글 삭제 (관리자)
+    @DeleteMapping("/post/{postId}/comments/{commentId}")
+    public CommentDeleteResponseDto deleteCommentAdmin(@PathVariable Long commentId, @PathVariable Long postId, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        String username = tokenChecker.checkToken(token);
+        return commentService.deleteCommentAdmin(commentId, postId, username);
+    }
 }

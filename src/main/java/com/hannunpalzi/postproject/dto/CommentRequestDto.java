@@ -1,5 +1,7 @@
 package com.hannunpalzi.postproject.dto;
 
+import com.hannunpalzi.postproject.entity.Comment;
+import com.hannunpalzi.postproject.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,12 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CommentRequestDto {
 
-    private String Comment;
+    private String comment;
 
 
 
-    public CommentRequestDto(String comment) {
-        Comment = comment;
+    public Comment toEntity(User user){
+        return new Comment(this.comment, user);
     }
-
 }
