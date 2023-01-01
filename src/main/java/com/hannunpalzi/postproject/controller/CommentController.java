@@ -1,4 +1,4 @@
-package com.hannunpalzi.postproject.controllor;
+package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.CommentRequestDto;
 import com.hannunpalzi.postproject.entity.Comment;

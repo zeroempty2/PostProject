@@ -25,7 +25,8 @@ public class Post extends TimeStamped {
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<PostLike> like = new ArrayList<>();
     public Post(String title, String contents, User user){
         this.title = title;
         this.contents = contents;

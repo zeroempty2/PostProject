@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-@NoArgsConstructorgi
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDto {
     private Long postId; // 게시글 id
@@ -17,6 +18,7 @@ public class PostResponseDto {
     private String writer; // 게시글 작성자
     private LocalDateTime createdAt; // 게시글 작성시간
     private LocalDateTime modifiedAt; // 게시글 수정시간
+    private Long like;
     private List<CommentResponseDto> commentResponseDtoList; // 게시글에 달린 댓글 리스트
 
 
@@ -27,6 +29,7 @@ public class PostResponseDto {
         this.writer = post.getWriter();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
-        this.commentResponseDtoList = post.getComments().stream().map(comment -> CommentResponseDto(comment)); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
+        this.like = (long) post.getLike().size();
+        this.commentResponseDtoList = post.getComments().stream().map(CommentResponseDto::valueOf).toList(); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
     }
 }

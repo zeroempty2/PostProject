@@ -29,6 +29,13 @@ public class ExceptionController {
         headers.setContentType(new MediaType("application","json", StandardCharsets.UTF_8));
         return new ResponseEntity<>(statusResponseDto,headers,HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StatusResponseDto> methodValidException(MethodArgumentNotValidException e){
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.BAD_REQUEST.value(),e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        headers.setContentType(new MediaType("application","json", StandardCharsets.UTF_8));
+        return new ResponseEntity<>(statusResponseDto,headers,HttpStatus.BAD_REQUEST);
+    }
+    ///////////////////////////////////////////커스텀익셉션/////////////////////////////////////////////////////////////
     @ExceptionHandler(InvalidTokenException.class)
     private ResponseEntity<StatusResponseDto> invalidTokenException(InvalidTokenException e){
         log.info(e.getMessage());
@@ -57,12 +64,6 @@ public class ExceptionController {
         StatusResponseDto statusResponseDto = exceptionService.getErrorResponse(Exception.NOT_FOUND_USER);
         return new ResponseEntity<>(statusResponseDto,headers,HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StatusResponseDto> methodValidException(MethodArgumentNotValidException e){
-        log.info(e.getMessage());
-        headers.setContentType(new MediaType("application","json", StandardCharsets.UTF_8));
-        StatusResponseDto statusResponseDto = exceptionService.makeMethodArgumentNotValidException(e.getBindingResult());
-        return new ResponseEntity<>(statusResponseDto,headers,HttpStatus.BAD_REQUEST);
-    }
+
 
 }
