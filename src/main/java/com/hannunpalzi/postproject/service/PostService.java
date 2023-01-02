@@ -8,7 +8,6 @@ import com.hannunpalzi.postproject.repository.PostRepository;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
 
     // 게시글 작성
     @Transactional
@@ -49,10 +47,9 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostResponseDto> getTotalPostsList() {
         List<Post> totalPostsList = postRepository.findAllByOrderByModifiedAtDesc();
-        List<PostResponseDto> totalPostResponseDtoList = totalPostsList.stream()
+        return totalPostsList.stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
-        return totalPostResponseDtoList;
 
     }
 
@@ -64,7 +61,7 @@ public class PostService {
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
         );
         // 2. 로그인한 username의 유저 생성
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         // 3. user의 username과 post의 writer 가 일치하는지 확인
@@ -86,7 +83,7 @@ public class PostService {
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
         );
         // 2. 로그인한 username의 유저 생성
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         // 3. 수정 진행
@@ -103,7 +100,7 @@ public class PostService {
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
         );
         // 2. 로그인한 username의 유저 생성
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
 
@@ -125,11 +122,11 @@ public class PostService {
     @Transactional
     public StatusResponseDto deletePostAdmin(Long postId, String username) {
         //1. 해당 post 있는지 확인 후 불러와
-        Post post = postRepository.findById(postId).orElseThrow(
+        postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
         );
         // 2. 로그인한 username의 유저 생성
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         //3. 삭제 진행

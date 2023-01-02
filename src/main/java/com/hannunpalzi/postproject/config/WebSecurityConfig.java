@@ -46,6 +46,16 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests().antMatchers("/users/signup").permitAll()
                 .antMatchers("/admin/signup").permitAll()
                 .antMatchers("/users/login").permitAll()
+                .antMatchers("/v2/api-docs",
+                        "/swagger-resources",
+                        "/swagger-resources/**",
+                        "/configuration/ui",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        /* swagger v3 */
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
