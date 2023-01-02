@@ -36,7 +36,7 @@ public class CommentController {
         return commentService.updateComment(commentId, postId, commentRequestDto, username);
     }
     //댓글 수정 (관리자)
-    @PutMapping("/posts/{postId}/comments/{commentId}")
+    @PutMapping("/admin/posts/{postId}/comments/{commentId}")
     public CommentUpdateResponseDto updateCommentAdmin(@PathVariable Long commentId, @PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);
         String username = tokenChecker.checkToken(token);
@@ -50,7 +50,7 @@ public class CommentController {
         return commentService.deleteComment(commentId, postId, username);
     }
     // 댓글 삭제 (관리자)
-    @DeleteMapping("/post/{postId}/comments/{commentId}")
+    @DeleteMapping("/admin/post/{postId}/comments/{commentId}")
     public CommentDeleteResponseDto deleteCommentAdmin(@PathVariable Long commentId, @PathVariable Long postId, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
         String username = tokenChecker.checkToken(token);

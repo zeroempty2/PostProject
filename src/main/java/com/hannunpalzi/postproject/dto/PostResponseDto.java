@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -31,6 +32,6 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.like = (long) post.getLike().size();
-        this.commentResponseDtoList = post.getComments().stream().map(CommentResponseDto::valueOf).toList(); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
+        this.commentResponseDtoList = post.getComments().stream().map(CommentResponseDto::valueOf).collect(Collectors.toList()); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
     }
 }
