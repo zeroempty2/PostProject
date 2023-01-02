@@ -1,5 +1,6 @@
 package com.hannunpalzi.postproject.dto;
 
+import com.hannunpalzi.postproject.entity.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,13 @@ public class CommentResponseDto {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
+
+    public CommentResponseDto(Comment comment) {
+        this.commentId = comment.getId();
+        this.writer = comment.getWriter();
+        this.comment = comment.getComment();
+        this.createdAt = comment.getCreatedAt();
+        this.modifiedAt = comment.getModifiedAt();
+    }
 }
+
