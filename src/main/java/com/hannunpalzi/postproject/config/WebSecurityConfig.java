@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/signup").permitAll()
                 .antMatchers("/users/login").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil,userDetailsService), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin().loginProcessingUrl("/login").permitAll();
 
