@@ -24,4 +24,4 @@ public class TokenChecker { // token에서 유저 검증 위한 tokenChecker 클
             return claims.getSubject(); // claims의 subejdc
         } else throw new IllegalArgumentException("토큰값이 null 입니다.");
     }
-}
+} // 스프링 세큐리티 사용으로, 토큰 체커는 필요 없어짐! 토큰 체커 사용하지 않도록 코드 수정한 뒤 삭제하거나 주석처리 예정

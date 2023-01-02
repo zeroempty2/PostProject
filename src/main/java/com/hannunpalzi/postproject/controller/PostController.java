@@ -2,9 +2,11 @@ package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.PostService;
 import com.hannunpalzi.postproject.service.TokenChecker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +16,12 @@ import java.util.List;
 @RestController
 public class PostController {
     private final PostService postService;
-    private final JwtUtil jwtUtil;
-    private final TokenChecker tokenChecker;
+//    private final JwtUtil jwtUtil;
+//    private final TokenChecker tokenChecker;
     //게시글 작성
     @PostMapping("/posts")
-    public CreatedPostResponseDto createPost(@RequestBody PostRequestDto postRequestDto , HttpServletRequest request){
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public CreatedPostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
         return postService.createPost(postRequestDto, username);
     }
 
@@ -34,33 +35,29 @@ public class PostController {
 
     //게시글 수정 (일반유저)
     @PutMapping("/posts/{postId}")
-    public PostUpdateResponseDto updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public PostUpdateResponseDto updatePost(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
         return postService.updatePost(postId, postRequestDto, username);
     }
 
     //게시글 수정 (관리자)
     @PutMapping("/admin/posts/{postId}")
-    public PostUpdateResponseDto updatePostAdmin(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public PostUpdateResponseDto updatePostAdmin(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
         return postService.updatePostAdmin(postId, postRequestDto, username);
     }
 
     //게시글 삭제 (일반유저)
     @DeleteMapping("/posts/{postId}")
-    public DeleteResponseDto deletePost(@PathVariable Long postId, HttpServletRequest request){
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public DeleteResponseDto deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
         return postService.deletePost(postId, username);
     }
 
     //게시글 수정 (관리자)
     @DeleteMapping("/admin/posts/{postId}")
-    public DeleteResponseDto deletePostAdmin(@PathVariable Long postId, HttpServletRequest request){
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public DeleteResponseDto deletePostAdmin(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
         return postService.deletePostAdmin(postId, username);
     }
 
