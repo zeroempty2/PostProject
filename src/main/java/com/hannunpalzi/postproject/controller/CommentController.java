@@ -1,13 +1,15 @@
-package com.hannunpalzi.postproject.controllor;
+package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.CommentDeleteResponseDto;
 import com.hannunpalzi.postproject.dto.CommentRequestDto;
 import com.hannunpalzi.postproject.dto.CommentUpdateResponseDto;
 import com.hannunpalzi.postproject.dto.CommentCreatResponseDto;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.CommentService;
 import com.hannunpalzi.postproject.service.TokenChecker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +24,8 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping("/posts/{postId}/comments")
-    public CommentCreatResponseDto createComment(@PathVariable Long postId , @RequestBody CommentRequestDto commentRequestDto , HttpServletRequest request){
-        String token = jwtUtil.resolveToken(request);
-        String username = tokenChecker.checkToken(token);
+    public CommentCreatResponseDto createComment(@PathVariable Long postId , @RequestBody CommentRequestDto commentRequestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
         return commentService.createComment(postId, commentRequestDto, username);
     }
     // 댓글 수정 (일반)
