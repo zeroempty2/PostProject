@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;
-    @PostMapping("/post/{id}/like")
+    @PostMapping("/posts/{id}/like")
     public ResponseEntity<StatusResponseDto> postLike(@PathVariable Long id, @RequestBody LikeRequestDto likeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
         return likeService.postLike(username,id,likeRequestDto);

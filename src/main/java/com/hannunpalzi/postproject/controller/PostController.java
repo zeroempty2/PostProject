@@ -1,19 +1,18 @@
 package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.*;
-import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.PostService;
-import com.hannunpalzi.postproject.service.TokenChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -46,6 +45,7 @@ public class PostController {
     }
 
     //게시글 수정 (관리자)
+    @Secured(UserRoleEnum.Authority.ADMIN)
     @PutMapping("/admin/posts/{postId}")
     public PostUpdateResponseDto updatePostAdmin(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
@@ -67,6 +67,7 @@ public class PostController {
     }
 
     //게시글 수정 (관리자)
+    @Secured(UserRoleEnum.Authority.ADMIN)
     @DeleteMapping("/admin/posts/{postId}")
     public ResponseEntity<StatusResponseDto> deletePostAdmin(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
