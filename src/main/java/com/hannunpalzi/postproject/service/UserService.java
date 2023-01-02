@@ -9,22 +9,24 @@ import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
+    @Transactional
     public void signup(UserSignupRequestDto requestDto) {
         String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
@@ -36,9 +38,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void signupAdmin(AdminSignupRequestDto requestDto) {
         String username = requestDto.getUsername();
-        String password = requestDto.getPassword();
+        String password = passwordEncoder.encode(requestDto.getPassword());
 
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
@@ -53,6 +56,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public UsernameAndRoleResponseDto login(LoginRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
@@ -60,7 +64,8 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
         );
-        if (!user.isvalidPassword(password)) {
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return new UsernameAndRoleResponseDto(username, user.getRole());
