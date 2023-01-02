@@ -7,6 +7,8 @@ import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.repository.PostRepository;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,7 +97,7 @@ public class PostService {
 
     @Transactional
     // 선택한 게시글 삭제(일반유저)
-    public DeleteResponseDto deletePost(Long postId, String username) {
+    public StatusResponseDto deletePost(Long postId, String username) {
         //1. 해당 post 있는지 확인 후 불러와
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
@@ -111,13 +113,17 @@ public class PostService {
             postRepository.deleteById(postId);
         } else throw new IllegalArgumentException("본인이 작성한 게시글만 삭제할 수 있습니다");
 
-        //5. DeleteResponseDto 생성 후 리턴
-        return new DeleteResponseDto("게시글 삭제 성공");
+        //5. StatusResponseDto 반환
+        return new StatusResponseDto(HttpStatus.OK.value(), "게시글 삭제 완료");
+
+
+
+
     }
 
     // 선택한 게시글 삭제(관리자)
     @Transactional
-    public DeleteResponseDto deletePostAdmin(Long postId, String username) {
+    public StatusResponseDto deletePostAdmin(Long postId, String username) {
         //1. 해당 post 있는지 확인 후 불러와
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
@@ -128,8 +134,9 @@ public class PostService {
         );
         //3. 삭제 진행
         postRepository.deleteById(postId);
-        //4. DeleteResponseDto 생성 후 리턴
-        return new DeleteResponseDto("게시글 삭제 성공");
+
+        //4. StatusResponseDto 반환
+        return new StatusResponseDto(HttpStatus.OK.value(), "게시글 삭제 완료");
 
     }
 }
