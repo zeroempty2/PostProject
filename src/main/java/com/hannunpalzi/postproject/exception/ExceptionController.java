@@ -5,12 +5,17 @@ import com.hannunpalzi.postproject.exception.illegalArgumentExceptionCustom.Inva
 import com.hannunpalzi.postproject.exception.illegalArgumentExceptionCustom.InvalidUsernameException;
 import com.hannunpalzi.postproject.exception.illegalArgumentExceptionCustom.InvalidWriterException;
 import com.hannunpalzi.postproject.exception.illegalArgumentExceptionCustom.NotFoundUserException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SecurityException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -35,6 +40,47 @@ public class ExceptionController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
         return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    private ResponseEntity<StatusResponseDto> AccessDeniedExceptionHandler(AccessDeniedException e){
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.FORBIDDEN.value(),e.getMessage());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    private ResponseEntity<StatusResponseDto> JwtExceptionHandler(JwtException e){
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.UNAUTHORIZED.value(),e.getMessage());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    private ResponseEntity<StatusResponseDto> SecurityExceptionHandler(SecurityException e){
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.UNAUTHORIZED.value(),e.getMessage());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    private ResponseEntity<StatusResponseDto> MalformedJwtExceptionHandler(MalformedJwtException e){
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.UNAUTHORIZED.value(),e.getMessage());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    private ResponseEntity<StatusResponseDto> SignatureExceptionHandler(SignatureException e){
+        System.out.println("xxxx");
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.UNAUTHORIZED.value(),e.getMessage());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application","json", Charset.forName("UTF-8")));
+        return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.UNAUTHORIZED);
     }
     ///////////////////////////////////////////커스텀익셉션/////////////////////////////////////////////////////////////
     @ExceptionHandler(InvalidTokenException.class)
