@@ -2,12 +2,14 @@ package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,13 @@ public class UserController {
         UsernameAndRoleResponseDto responseDto = userService.login(requestDto);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(responseDto.getUsername(), responseDto.getRole()));
         return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/delete/{userId}")
+    public void delete(@RequestBody UserDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long userId){
+        String username = userDetails.getUsername();
+        String password = userDetails.getPassword();
+        userService.delete(requestDto,userId);
     }
 }
 

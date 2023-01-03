@@ -1,9 +1,6 @@
 package com.hannunpalzi.postproject.service;
 
-import com.hannunpalzi.postproject.dto.AdminSignupRequestDto;
-import com.hannunpalzi.postproject.dto.LoginRequestDto;
-import com.hannunpalzi.postproject.dto.UserSignupRequestDto;
-import com.hannunpalzi.postproject.dto.UsernameAndRoleResponseDto;
+import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
@@ -69,5 +66,18 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return new UsernameAndRoleResponseDto(username, user.getRole());
+    }
+    @Transactional
+    public void delete(UserDeleteRequestDto userDeleteRequestDto,Long userId){
+        String username = userDeleteRequestDto.getUsername();
+        String password = userDeleteRequestDto.getPassword();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
+        );
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        userRepository.deleteUserById(userId);
     }
 }
