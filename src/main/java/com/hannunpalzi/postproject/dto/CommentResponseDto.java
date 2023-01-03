@@ -1,5 +1,6 @@
 package com.hannunpalzi.postproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hannunpalzi.postproject.entity.Comment;
 import lombok.Getter;
 
@@ -10,7 +11,9 @@ public class CommentResponseDto {
     private long commentId;
     private String writer;
     private String comment;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
     private Long like;
 
