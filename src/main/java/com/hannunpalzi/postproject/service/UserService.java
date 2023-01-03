@@ -3,7 +3,6 @@ package com.hannunpalzi.postproject.service;
 import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.entity.UserRoleEnum;
-import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

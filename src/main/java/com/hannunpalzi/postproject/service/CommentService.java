@@ -42,10 +42,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 ()-> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
-        Post post = postRepository.findById(postId).orElseThrow(
+        postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ID의 게시글이 존재하지 않습니다.")
         );
         if (comment.checkUserNameIsWriter(username)){
@@ -61,10 +61,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
-        Post post = postRepository.findById(postId).orElseThrow(
+        postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ID의 게시글이 존재하지 않습니다.")
         );
         comment.updateComment(commentRequestDto.getComment());
@@ -77,10 +77,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
-        Post post = postRepository.findById(postId).orElseThrow(
+        postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         if (comment.checkUserNameIsWriter(username)){
@@ -92,13 +92,13 @@ public class CommentService {
 
     @Transactional
     public StatusResponseDto deleteCommentAdmin(Long commentId, Long postId, String username){
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+        commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
-        User user = userRepository.findByUsername(username).orElseThrow(
+        userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
-        Post post = postRepository.findById(postId).orElseThrow(
+        postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         commentRepository.deleteById(commentId);

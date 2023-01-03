@@ -1,5 +1,6 @@
 package com.hannunpalzi.postproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hannunpalzi.postproject.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,9 @@ public class PostResponseDto {
     private String title; // 게시글 제목
     private String contents; // 게시글 내용
     private String writer; // 게시글 작성자
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt; // 게시글 작성시간
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt; // 게시글 수정시간
     private Long like;
     private List<CommentResponseDto> commentResponseDtoList; // 게시글에 달린 댓글 리스트

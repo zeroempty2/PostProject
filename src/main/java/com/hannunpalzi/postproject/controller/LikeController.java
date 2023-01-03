@@ -4,6 +4,9 @@ import com.hannunpalzi.postproject.dto.LikeRequestDto;
 import com.hannunpalzi.postproject.dto.StatusResponseDto;
 import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.LikeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,13 +18,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
+@Api(tags = {"좋아요 api"})
 public class LikeController {
     private final LikeService likeService;
-    @PostMapping("/posts/{id}/like")
-    public ResponseEntity<StatusResponseDto> postLike(@PathVariable Long id, @RequestBody LikeRequestDto likeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    @ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1")
+    @ApiOperation(value = "게시글 좋아요", notes = "게시글에 좋아요를 한다.")
+    @PostMapping("/posts/{postId}/like")
+    public ResponseEntity<StatusResponseDto> postLike(@PathVariable Long postId, @RequestBody LikeRequestDto likeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
-        return likeService.postLike(username,id,likeRequestDto);
+        return likeService.postLike(username,postId,likeRequestDto);
     }
+    @ApiImplicitParam(name = "commentId", value = "댓글 id", dataTypeClass = Integer.class,example="1")
+    @ApiOperation(value = "댓글 좋아요", notes = "댓글에 좋아요를 한다.")
     @PostMapping("/comments/{commentId}/like")
     public ResponseEntity<StatusResponseDto> commentLike(@PathVariable Long commentId, @RequestBody LikeRequestDto likeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
