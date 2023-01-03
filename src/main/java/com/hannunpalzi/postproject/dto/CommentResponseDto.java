@@ -1,9 +1,12 @@
 package com.hannunpalzi.postproject.dto;
 
 import com.hannunpalzi.postproject.entity.Comment;
+import com.hannunpalzi.postproject.entity.ReComment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class CommentResponseDto {
@@ -13,6 +16,7 @@ public class CommentResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Long like;
+    private List<ReCommentResponseDto> reCommentResponseDtoList;
 
     public static CommentResponseDto valueOf(Comment comments) {
         return new CommentResponseDto(
@@ -21,17 +25,19 @@ public class CommentResponseDto {
                 comments.getComment(),
                 comments.getCreatedAt(),
                 comments.getModifiedAt(),
-                (long)comments.getLike().size()
+                (long)comments.getLike().size(),
+                comments.getReComments()
                 );
     }
 
-    public CommentResponseDto(long commentId, String writer, String comment, LocalDateTime createdAt, LocalDateTime modifiedAt,Long like) {
+    public CommentResponseDto(long commentId, String writer, String comment, LocalDateTime createdAt, LocalDateTime modifiedAt, Long like, List<ReComment> reComments) {
         this.commentId = commentId;
         this.writer = writer;
         this.comment = comment;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.like = like;
+        this.reCommentResponseDtoList = reComments.stream().map(ReCommentResponseDto::new).collect(Collectors.toList());
     }
 
     public CommentResponseDto(Comment comment) {
@@ -40,6 +46,7 @@ public class CommentResponseDto {
         this.comment = comment.getComment();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
+        this.reCommentResponseDtoList = comment.getReComments().stream().map(ReCommentResponseDto::new).collect(Collectors.toList());
     }
 }
 

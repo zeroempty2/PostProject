@@ -35,4 +35,12 @@ public class ReComment extends TimeStamped {
         this.user = user;
         this.comment = comment;
     }
+
+    public boolean checkUsernameIsWriter(String username) {
+        return this.getWriter().equals(username);
+    }
+
+    public void update(String reComment) {
+        this.reComment = reComment;
+    }
 }

@@ -115,10 +115,6 @@ public class PostService {
 
         //5. StatusResponseDto 반환
         return new StatusResponseDto(HttpStatus.OK.value(), "게시글 삭제 완료");
-
-
-
-
     }
 
     // 선택한 게시글 삭제(관리자)
@@ -137,6 +133,5 @@ public class PostService {
 
         //4. StatusResponseDto 반환
         return new StatusResponseDto(HttpStatus.OK.value(), "게시글 삭제 완료");
-
     }
 }
