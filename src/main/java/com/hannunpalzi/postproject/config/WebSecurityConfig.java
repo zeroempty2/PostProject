@@ -51,6 +51,8 @@ public class WebSecurityConfig {
 
         http.formLogin().loginProcessingUrl("/login").permitAll();
 
+
+
         return http.build();
     }
 }

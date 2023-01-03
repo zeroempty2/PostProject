@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +31,12 @@ public class PostController {
     }
 
     //선택한 게시글 상세 조회
+    @PreAuthorize("permitAll()")
     @GetMapping("/posts/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId) { return postService.getPost(postId);}
 
     // 전체 게시글 조회
+    @PreAuthorize("permitAll()")
     @GetMapping("/posts")
     public List<PostResponseDto> getTotalPostsList() { return postService.getTotalPostsList();}
 
