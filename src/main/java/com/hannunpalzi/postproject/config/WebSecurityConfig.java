@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                         "/v3/api-docs/**",
                         "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 

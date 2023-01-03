@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public void delete(@RequestBody UserDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long userId){
+    public void delete(@RequestBody UserDeleteRequestDto requestDto, @PathVariable Long userId){
         userService.delete(requestDto,userId);
     }
 }
