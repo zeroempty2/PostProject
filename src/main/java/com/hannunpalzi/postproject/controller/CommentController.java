@@ -55,7 +55,7 @@ public class CommentController {
     }
     // 댓글 삭제 (관리자)
     @Secured(UserRoleEnum.Authority.ADMIN)
-    @DeleteMapping("/admins/post/{postId}/comments/{commentId}")
+    @DeleteMapping("/admins/posts/{postId}/comments/{commentId}")
     @ApiImplicitParams({@ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1"), @ApiImplicitParam(name = "commentId", value = "댓글 id", dataTypeClass = Integer.class,example="1")})
     @ApiOperation(value = "댓글 삭제(관리자)", notes = "댓글을 관리자 권한으로 삭제한다.")
     public StatusResponseDto deleteCommentAdmin(@PathVariable Long commentId, @PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

@@ -54,10 +54,8 @@ public class UserController {
         return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/delete/{userId}")
+    @DeleteMapping("/users/{userId}")
     public void delete(@RequestBody UserDeleteRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long userId){
-        String username = userDetails.getUsername();
-        String password = userDetails.getPassword();
         userService.delete(requestDto,userId);
     }
 }

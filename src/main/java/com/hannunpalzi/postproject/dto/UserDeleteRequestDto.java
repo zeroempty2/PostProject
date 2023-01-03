@@ -6,11 +6,8 @@ import lombok.Getter;
 @Getter
 public class UserDeleteRequestDto {
 
-    private final String username;
-    private final String password;
+    private  String username;
+    private  String password;
 
-    public UserDeleteRequestDto(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-    }
+
 }
