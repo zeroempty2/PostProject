@@ -28,6 +28,9 @@ public class Comment extends TimeStamped {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<CommentLike> like = new ArrayList<>();
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<ReComment> reComments = new ArrayList<>();
+
     public Comment(CommentRequestDto commentRequestDto, User user, Post post) {
         this.comment = commentRequestDto.getComment();
         this.writer = user.getUsername();
