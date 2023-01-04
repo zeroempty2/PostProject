@@ -34,7 +34,7 @@ public class PostResponseDto {
         this.writer = post.getWriter();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
-        this.like = (long) post.getLike().size();
+        this.like =  post.getPostLike();
         this.commentResponseDtoList = post.getComments().stream().map(CommentResponseDto::valueOf).collect(Collectors.toList()); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
     }
 }

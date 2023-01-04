@@ -35,9 +35,13 @@ public class LikeService {
             Optional<PostLike> found = postLikeRepository.findByUsername(username);
             if (found.isPresent()) {
                 postLikeRepository.deleteByUsername(username);
+                post.minusLike();
+                postRepository.save(post);
                 return responseMessageService.likeCancel();
             } else {
                 PostLike postLike = new PostLike(username, post);
+                post.plusLike();
+                postRepository.save(post);
                 postLikeRepository.save(postLike);
                 return responseMessageService.likeOk();
             }
@@ -45,17 +49,21 @@ public class LikeService {
         throw new IllegalArgumentException("오류입니다.");
     }
     @Transactional
-    public ResponseEntity<StatusResponseDto> commentLike(String username, Long id, LikeRequestDto likeRequestDto){
+    public ResponseEntity<StatusResponseDto> commentLike(String username, Long postId, Long commentId, LikeRequestDto likeRequestDto){
         if(likeRequestDto.isLike()) {
-            Comment comment = commentRepository.findById(id).orElseThrow(
+            Comment comment = commentRepository.findById(commentId).orElseThrow(
                     () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
             );
             Optional<CommentLike> found = commentLikeRepository.findByUsername(username);
             if (found.isPresent()) {
                 commentLikeRepository.deleteByUsername(username);
+                comment.minusLike();
+                commentRepository.save(comment);
                 return responseMessageService.likeCancel();
             } else {
-                CommentLike commentLike = new CommentLike(username, comment);
+                CommentLike commentLike = new CommentLike(username,comment,postId);
+                comment.plusLike();
+                commentRepository.save(comment);
                 commentLikeRepository.save(commentLike);
                 return responseMessageService.likeOk();
             }
