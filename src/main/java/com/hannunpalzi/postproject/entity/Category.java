@@ -36,4 +36,8 @@ public class Category {
     public void updateCategoryName(CategoryRequestDto requestDto) {
         this.name = requestDto.getName();
     }
+
+    public void updateChildrenCategoryParent(String parent) {
+        this.parent = parent;
+    }
 }

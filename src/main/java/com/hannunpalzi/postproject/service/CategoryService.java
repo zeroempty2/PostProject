@@ -56,6 +56,12 @@ public class CategoryService {
         Optional<Category> found = categoryRepository.findByName(requestDto.getName());
         if (found.isPresent()) throw new IllegalArgumentException("중복된 카테고리명이 존재합니다.");
 
+        String parent = category.getName();
+        List<Category> childrenCategoryList = categoryRepository.getCategoriesByParent(parent);
+        for (Category childrenCategory : childrenCategoryList) {
+            childrenCategory.updateChildrenCategoryParent(requestDto.getName());
+        }
+
         category.updateCategoryName(requestDto);
 //        return new CategoryResponseDto(category);
     }
