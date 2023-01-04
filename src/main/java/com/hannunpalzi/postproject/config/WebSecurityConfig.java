@@ -2,6 +2,7 @@ package com.hannunpalzi.postproject.config;
 
 import com.hannunpalzi.postproject.jwtUtil.JwtAuthFilter;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.repository.UserRepository;
 import com.hannunpalzi.postproject.security.CustomAuthenticationEntryPoint;
 import com.hannunpalzi.postproject.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class WebSecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,7 +64,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/users/**").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService,userRepository), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 

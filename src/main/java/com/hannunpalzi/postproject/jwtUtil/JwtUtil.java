@@ -25,7 +25,9 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    public static final String REFRESH_HEADER = "Refresh";
+    private static final long TOKEN_TIME = 60 * 60 * 10L;
+    private static final long REFRESH_TOKEN_TIME = 60 * 60 * 100000L;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -46,6 +48,13 @@ public class JwtUtil {
         }
         return null;
     }
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(REFRESH_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 
     // 토큰 생성
     public String createToken(String username, UserRoleEnum role) {
@@ -60,6 +69,19 @@ public class JwtUtil {
                         .signWith(key, signatureAlgorithm)
                         .compact();
     }
+    public String createRefreshToken(String username) {
+        Date date = new Date();
+
+        return BEARER_PREFIX +
+                Jwts.builder()
+                        .setSubject(username)
+                        .claim(AUTHORIZATION_KEY, REFRESH_HEADER)
+                        .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
+                        .setIssuedAt(date)
+                        .signWith(key, signatureAlgorithm)
+                        .compact();
+    }
+
 
     // 토큰 검증
     public boolean validateToken(String token) {
