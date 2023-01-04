@@ -33,7 +33,7 @@ public class Category {
         this.parent = parent;
     }
 
-    public void updateName(CategoryRequestDto requestDto) {
+    public void updateCategoryName(CategoryRequestDto requestDto) {
         this.name = requestDto.getName();
     }
 }

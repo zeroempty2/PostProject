@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,28 +27,36 @@ public class CategoryService {
     }
 
     public CategoryResponseDto createCategory(CategoryRequestDto requestDto) {
+        Optional<Category> found = categoryRepository.findByName(requestDto.getName());
+        if (found.isPresent()) throw new IllegalArgumentException("중복된 카테고리명이 존재합니다.");
         Category category = new Category(requestDto);
         categoryRepository.save(category);
         return new CategoryResponseDto(category);
     }
 
-    public CategoryResponseDto createChildrenCategory(Long categoryId, CategoryRequestDto requestDto) {
+    public void createChildrenCategory(Long categoryId, CategoryRequestDto requestDto) {
         Category parentCategory = categoryRepository.findByCategoryId(categoryId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
         );
+        Optional<Category> found = categoryRepository.findByName(requestDto.getName());
+        if (found.isPresent()) throw new IllegalArgumentException("중복된 카테고리명이 존재합니다.");
+
         int layer = parentCategory.getLayer() + 1;
         String parent = parentCategory.getName();
         Category category = new Category(requestDto, layer, parent);
         categoryRepository.save(category);
-        return new CategoryResponseDto(category);
+//        return new CategoryResponseDto(category);
     }
 
-    public CategoryResponseDto updateCategory(Long categoryId, CategoryRequestDto requestDto) {
+    public void updateCategory(Long categoryId, CategoryRequestDto requestDto) {
         Category category = categoryRepository.findByCategoryId(categoryId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
         );
-        category.updateName(requestDto);
-        return new CategoryResponseDto(category);
+        Optional<Category> found = categoryRepository.findByName(requestDto.getName());
+        if (found.isPresent()) throw new IllegalArgumentException("중복된 카테고리명이 존재합니다.");
+
+        category.updateCategoryName(requestDto);
+//        return new CategoryResponseDto(category);
     }
 
     @Transactional

@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> getAllByOrderByNameAsc();
     List<Category> getCategoriesByLayer(int layer);
+    Optional<Category> findByName(String name);
     Optional<Category> findByCategoryId(Long categoryId);
     void deleteByParent(String parent);
 }

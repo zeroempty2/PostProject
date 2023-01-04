@@ -61,6 +61,7 @@ public class WebSecurityConfig {
                         "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/categories").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
