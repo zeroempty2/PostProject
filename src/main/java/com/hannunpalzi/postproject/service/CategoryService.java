@@ -48,6 +48,7 @@ public class CategoryService {
 //        return new CategoryResponseDto(category);
     }
 
+    @Transactional
     public void updateCategory(Long categoryId, CategoryRequestDto requestDto) {
         Category category = categoryRepository.findByCategoryId(categoryId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
