@@ -49,6 +49,15 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    // 카테고리명으로 소속 게시글 조회
+    public List<PostResponseDto> getPostListByCategoryId(Long categoryId) {
+        categoryRepository.findByCategoryId(categoryId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
+        );
+        List<Post> postList = postRepository.findByCategoryIdOrderByModifiedAtDesc(categoryId);
+        return postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
+    }
+
     //전체 게시글 조회
     @Transactional(readOnly = true)
     public List<PostResponseDto> getTotalPostsList() {

@@ -36,6 +36,11 @@ public class PostController {
         return postService.createPost(postRequestDto, username);
     }
 
+    // 카테고리명으로 소속 게시글 조회
+    @GetMapping("/categories/{categoryId}/posts")
+    public List<PostResponseDto> getPostListByCategoryId(@PathVariable Long categoryId) {
+        return postService.getPostListByCategoryId(categoryId);
+    }
 
     @ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1")
     @ApiOperation(value = "게시글 조회", notes = "선택한 게시글을 조회한다.")
