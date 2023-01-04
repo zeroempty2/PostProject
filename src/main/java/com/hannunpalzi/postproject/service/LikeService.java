@@ -36,12 +36,10 @@ public class LikeService {
             if (found.isPresent()) {
                 postLikeRepository.deleteByUsername(username);
                 post.minusLike();
-                postRepository.save(post);
                 return responseMessageService.likeCancel();
             } else {
                 PostLike postLike = new PostLike(username, post);
                 post.plusLike();
-                postRepository.save(post);
                 postLikeRepository.save(postLike);
                 return responseMessageService.likeOk();
             }
@@ -58,12 +56,10 @@ public class LikeService {
             if (found.isPresent()) {
                 commentLikeRepository.deleteByUsername(username);
                 comment.minusLike();
-                commentRepository.save(comment);
                 return responseMessageService.likeCancel();
             } else {
                 CommentLike commentLike = new CommentLike(username,comment,postId);
                 comment.plusLike();
-                commentRepository.save(comment);
                 commentLikeRepository.save(commentLike);
                 return responseMessageService.likeOk();
             }

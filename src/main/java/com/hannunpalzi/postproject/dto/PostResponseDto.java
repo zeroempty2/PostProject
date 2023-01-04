@@ -24,7 +24,7 @@ public class PostResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt; // 게시글 수정시간
     private Long like;
-    private List<CommentResponseDto> commentResponseDtoList; // 게시글에 달린 댓글 리스트
+    private List<CommentResponseDto> commentList; // 게시글에 달린 댓글 리스트
 
 
     public PostResponseDto(Post post) {
@@ -35,6 +35,6 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.like =  post.getPostLike();
-        this.commentResponseDtoList = post.getComments().stream().map(CommentResponseDto::valueOf).collect(Collectors.toList()); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
+        this.commentList = post.getComments().stream().map(CommentResponseDto::valueOf).collect(Collectors.toList()); // stream.map(comment -> CommentResponseDto  과정 추가 필요)
     }
 }
