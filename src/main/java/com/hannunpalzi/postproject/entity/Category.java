@@ -14,7 +14,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -31,5 +31,9 @@ public class Category {
         this.name = requestDto.getName();
         this.layer = layer;
         this.parent = parent;
+    }
+
+    public void updateName(CategoryRequestDto requestDto) {
+        this.name = requestDto.getName();
     }
 }
