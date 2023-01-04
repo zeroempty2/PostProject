@@ -4,10 +4,7 @@ import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.entity.Post;
 import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
-import com.hannunpalzi.postproject.repository.CommentLikeRepository;
-import com.hannunpalzi.postproject.repository.PostLikeRepository;
-import com.hannunpalzi.postproject.repository.PostRepository;
-import com.hannunpalzi.postproject.repository.UserRepository;
+import com.hannunpalzi.postproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final CategoryRepository categoryRepository;
 
     // 게시글 작성
     @Transactional
@@ -30,6 +28,10 @@ public class PostService {
         // username 을 통해 post 의 writer 가 될 user 생성
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 username 의 사용자가 존재하지 않음")
+        );
+        // 카테고리 id로 해당 카테고리가 존재하지 않는다면 예외 처리
+        categoryRepository.findByCategoryId(postRequestDto.getCategoryId()).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
         );
         //post 생성 후 레파지토리에 저장
         Post post = postRequestDto.toEntity(user);
@@ -68,10 +70,14 @@ public class PostService {
         userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
+        // 카테고리 id로 해당 카테고리가 존재하지 않는다면 예외 처리
+        categoryRepository.findByCategoryId(postRequestDto.getCategoryId()).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
+        );
         // 3. user의 username과 post의 writer 가 일치하는지 확인
         if (post.checkUsernameIsWriter(username)) {
             // 4. 일치하는 경우 수정 진행
-            post.update(postRequestDto.getTitle(), postRequestDto.getContents());
+            post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategoryId());
         } else throw new IllegalArgumentException("본인이 작성한 게시글만 수정할 수 있습니다.");
 
         // 5. postResponseDto 생성해서 리턴
@@ -90,8 +96,12 @@ public class PostService {
         userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
+        // 카테고리 id로 해당 카테고리가 존재하지 않는다면 예외 처리
+        categoryRepository.findByCategoryId(postRequestDto.getCategoryId()).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
+        );
         // 3. 수정 진행
-        post.update(postRequestDto.getTitle(), postRequestDto.getContents());
+        post.update(postRequestDto.getTitle(), postRequestDto.getContents(), postRequestDto.getCategoryId());
         // 4. postResponseDto 생성해서 리턴
         return new PostUpdateResponseDto(post);
     }

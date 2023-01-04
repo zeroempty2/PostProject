@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostResponseDto {
     private Long postId; // 게시글 id
+    private Long categoryId; // 카테고리 id
     private String title; // 게시글 제목
     private String contents; // 게시글 내용
     private String writer; // 게시글 작성자
@@ -29,6 +30,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post) {
         this.postId = post.getId();
+        this.categoryId = post.getCategoryId();
         this.title = post.getTitle();
         this.contents = post.getContents();
         this.writer = post.getWriter();
