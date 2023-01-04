@@ -4,6 +4,8 @@ import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.entity.Post;
 import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.repository.CommentLikeRepository;
+import com.hannunpalzi.postproject.repository.PostLikeRepository;
 import com.hannunpalzi.postproject.repository.PostRepository;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     // 게시글 작성
     @Transactional
@@ -106,6 +110,8 @@ public class PostService {
 
         //3. 작성자와 로그인유저가 일치하는지 확인해
         if (post.checkUsernameIsWriter(username)) {
+            postLikeRepository.deleteAllByPost(post);
+            commentLikeRepository.deleteAllByPostId(postId);
             //4. 일치할 시 삭제 진행
             postRepository.deleteById(postId);
         } else throw new IllegalArgumentException("본인이 작성한 게시글만 삭제할 수 있습니다");
@@ -118,13 +124,15 @@ public class PostService {
     @Transactional
     public StatusResponseDto deletePostAdmin(Long postId, String username) {
         //1. 해당 post 있는지 확인 후 불러와
-        postRepository.findById(postId).orElseThrow(
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 postId의 포스트가 존재하지 않습니다")
         );
         // 2. 로그인한 username의 유저 생성
         userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
+        postLikeRepository.deleteAllByPost(post);
+        commentLikeRepository.deleteAllByPostId(postId);
         //3. 삭제 진행
         postRepository.deleteById(postId);
 

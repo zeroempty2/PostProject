@@ -25,20 +25,25 @@ public class Post extends TimeStamped {
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<PostLike> like = new ArrayList<>();
+    private Long postLike;
     public Post(String title, String contents, User user){
         this.title = title;
         this.contents = contents;
         this.writer = user.getUsername();
         this.user = user;
+        this.postLike = 0L;
     }
 
     public void update(String title, String contents){
         this.title = title;
         this.contents = contents;
     }
-
+    public void plusLike(){
+        this.postLike += 1;
+    }
+    public void minusLike(){
+        this.postLike -= 1;
+    }
     public boolean checkUsernameIsWriter(String username){
         return this.getWriter().equals(username);
     }
