@@ -17,4 +17,9 @@ public class ReCommentLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private ReComment reComment;
+
+    public ReCommentLike(String username, ReComment reComment) {
+        this.username = username;
+        this.reComment = reComment;
+    }
 }

@@ -35,4 +35,12 @@ public class LikeController {
         String username = userDetails.getUsername();
         return likeService.commentLike(username,commentId,likeRequestDto);
     }
+
+    @ApiImplicitParam(name = "re-commentId", value = "대댓글 id", dataTypeClass = Integer.class,example="1")
+    @ApiOperation(value = "대댓글 좋아요", notes = "대댓글에 좋아요를 한다.")
+    @PostMapping("/re-comments/{reCommentId}/like")
+    public ResponseEntity<StatusResponseDto> reCommentLike(@PathVariable Long reCommentId, @RequestBody LikeRequestDto likeRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String username = userDetails.getUsername();
+        return likeService.reCommentLike(username, reCommentId, likeRequestDto);
+    }
 }
