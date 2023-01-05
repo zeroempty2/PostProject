@@ -2,6 +2,7 @@ package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.*;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.jwtUtil.RefreshJwt;
 import com.hannunpalzi.postproject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final RefreshJwt refreshJwt;
 
     @ApiOperation(value = "계정생성", notes = "계정생성을 한다.")
     @PostMapping("/users/signup")
@@ -47,14 +48,11 @@ public class UserController {
     public ResponseEntity<StatusResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
         StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.OK.value(), "로그인 완료");
         HttpHeaders headers = new HttpHeaders();
-        String refreshToken = jwtUtil.createRefreshToken(requestDto.getUsername());
-//        Cookie refreshCookie = new Cookie("RefreshToken", refreshToken.substring(7));
-//        refreshCookie.setMaxAge(24 * 7 * 60 * 60 * 1000);
-//        response.addCookie(refreshCookie);
+        String refreshToken = refreshJwt.createRefreshToken(requestDto.getUsername());
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
         UsernameAndRoleResponseDto responseDto = userService.login(requestDto,refreshToken);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(responseDto.getUsername(), responseDto.getRole()));
-        response.addHeader(JwtUtil.REFRESH_HEADER, refreshToken);
+        response.addHeader(RefreshJwt.REFRESH_HEADER, refreshToken);
         return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
     }
 
