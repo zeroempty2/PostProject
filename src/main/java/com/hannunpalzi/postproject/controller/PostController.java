@@ -1,7 +1,6 @@
 package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.*;
-import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.security.UserDetailsImpl;
 import com.hannunpalzi.postproject.service.PostService;
 import io.swagger.annotations.Api;
@@ -12,7 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@Api(tags = {"게시글 작성 CRUD api"})
+@Api(tags = {"게시글 CRUD api"})
 public class PostController {
     private final PostService postService;
 //    private final JwtUtil jwtUtil; // userDetails 사용으로 필요없어짐
@@ -65,7 +64,7 @@ public class PostController {
     //게시글 수정 (관리자)
     @ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1")
     @ApiOperation(value = "게시글 수정(관리자)", notes = "선택한 게시글을 관리자 권한으로 수정한다.")
-    @Secured(UserRoleEnum.Authority.ADMIN)
+//    @Secured(UserRoleEnum.Authority.ADMIN)
     @PutMapping("/admin/posts/{postId}")
     public PostUpdateResponseDto updatePostAdmin(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
@@ -85,13 +84,12 @@ public class PostController {
         StatusResponseDto statusResponseDto = postService.deletePost(postId, username);
         return new ResponseEntity<>(statusResponseDto, headers,HttpStatus.OK);
 
-
     }
 
-    //게시글 수정 (관리자)
+    //게시글 삭제 (관리자)
     @ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1")
     @ApiOperation(value = "게시글 삭제(관리자)", notes = "선택한 게시글을 관리자 권한으로 삭제한다.")
-    @Secured(UserRoleEnum.Authority.ADMIN)
+//    @Secured(UserRoleEnum.Authority.ADMIN)//hasanyRole로 인가를 제한하면 accessdDeniedHandler로 예외처리를 해야한다. @Secured로 제한하면 컨트롤러까지 오기때문에 전역 예외처리로 예외처리가 가능하다.
     @DeleteMapping("/admin/posts/{postId}")
     public ResponseEntity<StatusResponseDto> deletePostAdmin(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();

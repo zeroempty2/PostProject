@@ -53,6 +53,7 @@ public class ExceptionController {
         return new ResponseEntity<>(statusResponseDto,httpHeaders,HttpStatus.FORBIDDEN);
     }
 
+
     @ExceptionHandler(JwtException.class)
     private ResponseEntity<StatusResponseDto> JwtExceptionHandler(JwtException e){
         StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.UNAUTHORIZED.value(),e.getMessage());

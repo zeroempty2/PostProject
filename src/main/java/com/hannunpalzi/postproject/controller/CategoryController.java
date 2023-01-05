@@ -6,6 +6,9 @@ import com.hannunpalzi.postproject.dto.CategoryResponseDto;
 import com.hannunpalzi.postproject.dto.StatusResponseDto;
 import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.service.CategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,9 +22,10 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = {"카테고리 CRUD api"})
 public class CategoryController {
     private final CategoryService categoryService;
-
+    @ApiOperation(value = "카테고리 조회", notes = "카테고리 목록을 조회한다.")
     @GetMapping("/categories")
     public List<CategoryListResponseDto> getCategoryList() {
         return categoryService.getCategoryList();
@@ -32,7 +36,8 @@ public class CategoryController {
         return categoryService.getChildrenCategory(categoryId);
     }
 
-    @Secured(UserRoleEnum.Authority.ADMIN)
+
+    @ApiOperation(value = "카테고리 생성", notes = "카테고리를 생성한다.")
     @PostMapping("/categories")
     public ResponseEntity<StatusResponseDto> createCategory(@RequestBody CategoryRequestDto requestDto) {
         StatusResponseDto responseDto = new StatusResponseDto(HttpStatus.CREATED.value(), "카테고리 등록 완료");
@@ -42,7 +47,9 @@ public class CategoryController {
         return new ResponseEntity<>(responseDto, headers, HttpStatus.CREATED);
     }
 
-    @Secured(UserRoleEnum.Authority.ADMIN)
+
+    @ApiOperation(value = "하위 카테고리 생성", notes = "하위 카테고리를 생성한다.")
+    @ApiImplicitParam(name = "categoryId", value = "카테고리 id", dataTypeClass = Integer.class,example="1")
     @PostMapping("/categories/{categoryId}")
     public ResponseEntity<StatusResponseDto> createChildrenCategory(@PathVariable Long categoryId, @RequestBody CategoryRequestDto requestDto) {
         StatusResponseDto responseDto = new StatusResponseDto(HttpStatus.CREATED.value(), "카테고리 등록 완료");
@@ -52,7 +59,8 @@ public class CategoryController {
         return new ResponseEntity<>(responseDto, headers, HttpStatus.CREATED);
     }
 
-    @Secured(UserRoleEnum.Authority.ADMIN)
+    @ApiOperation(value = "카테고리 수정", notes = "카테고리를 수정한다.")
+    @ApiImplicitParam(name = "categoryId", value = "카테고리 id", dataTypeClass = Integer.class,example="1")
     @PutMapping("/categories/{categoryId}")
     public ResponseEntity<StatusResponseDto> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryRequestDto requestDto) {
         StatusResponseDto responseDto = new StatusResponseDto(HttpStatus.OK.value(), "카테고리 수정 완료");
@@ -63,6 +71,8 @@ public class CategoryController {
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)
+    @ApiOperation(value = "카테고리 삭제", notes = "카테고리를 삭제한다.")
+    @ApiImplicitParam(name = "categoryId", value = "카테고리 id", dataTypeClass = Integer.class,example="1")
     @DeleteMapping("/categories/{categoryId}")
     public ResponseEntity<StatusResponseDto> deleteCategory(@PathVariable Long categoryId) {
         StatusResponseDto responseDto = new StatusResponseDto(HttpStatus.OK.value(), "카테고리 삭제 완료");
