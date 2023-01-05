@@ -5,7 +5,11 @@ ___
 [![My Skills](https://skillicons.dev/icons?i=java,spring,idea,git,github)](https://skillicons.dev)
 
 ### Notion TeamSpace :https://mountainous-march-11f.notion.site/f0acd39deaa94413a8d2e5ecb4372393?v=3f5e74eca5ab4ca6aeba65de146c2e7f
-
+___
+개발환경
+Java17
+Springboot 2.7.6
+JDK17
 ___
 
 ### A반 8조 (한눈8지말조)
