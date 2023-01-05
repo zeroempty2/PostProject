@@ -28,20 +28,21 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final RefreshJwt refreshJwt;
     private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);
-        String refreshToken = jwtUtil.resolveRefreshToken(request);
+        String refreshToken = refreshJwt.resolveRefreshToken(request);
 
         if(token != null) {
             if(!jwtUtil.validateToken(token)){
                 try{
-                    String username = jwtUtil.getUserInfoFromToken(refreshToken).getSubject();
+                    String username = refreshJwt.getUserInfoFromToken(refreshToken).getSubject();
                     User user = userRepository.findByUsername(username).orElseThrow();
 
-                    if(jwtUtil.validateToken(user.getRefreshToken().substring(7))){
+                    if(refreshJwt.validateToken(user.getRefreshToken().substring(7))){
                         if(user.getRefreshToken().substring(7).equals(refreshToken)) {
                             response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(user.getUsername(), user.getRole()));
                             jwtExceptionHandler(response, "Token is reissuance. Please send again.", HttpStatus.UNAUTHORIZED.value());
