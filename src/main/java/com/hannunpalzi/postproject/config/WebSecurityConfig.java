@@ -2,7 +2,9 @@ package com.hannunpalzi.postproject.config;
 
 import com.hannunpalzi.postproject.jwtUtil.JwtAuthFilter;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
+import com.hannunpalzi.postproject.jwtUtil.RefreshJwt;
 import com.hannunpalzi.postproject.repository.UserRepository;
+import com.hannunpalzi.postproject.security.CustomAccessDeniedHandler;
 import com.hannunpalzi.postproject.security.CustomAuthenticationEntryPoint;
 import com.hannunpalzi.postproject.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtUtil jwtUtil;
+    private final RefreshJwt refreshJwt;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final UserRepository userRepository;
 
     @Bean
@@ -63,12 +67,14 @@ public class WebSecurityConfig {
                         "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/users/**").permitAll()
+                .antMatchers("/admin/posts/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService,userRepository), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService,refreshJwt,userRepository), UsernamePasswordAuthenticationFilter.class);
 
+        //401 인증과정 실패시 에러처리
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-
-
+        //403
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
 
         return http.build();
     }
