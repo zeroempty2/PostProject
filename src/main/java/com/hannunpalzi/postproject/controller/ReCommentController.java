@@ -45,7 +45,7 @@ public class ReCommentController {
             @ApiImplicitParam(name = "reCommentId", value = "대댓글 id", dataTypeClass = Integer.class,example="1")
     })
     @ApiOperation(value = "대댓글 수정", notes = "대댓글을 수정한다.")
-    @PutMapping("/posts/{postId}/comments/{commentId}/re-comments/{reCommentId}")//@RequsetPatram일시 http://localhost:8080/posts/{postId}/comments/{commentId}?reCommentId=1
+    @PutMapping("/posts/{postId}/comments/{commentId}/re-comments/{reCommentId}")
     public ReCommentResponseDto updateReComment(@PathVariable Long reCommentId, @PathVariable Long postId, @PathVariable Long commentId, @RequestBody ReCommentRequestDto recommentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
         return reCommentService.updateReComment(reCommentId, commentId,  postId, recommentRequestDto, username);
