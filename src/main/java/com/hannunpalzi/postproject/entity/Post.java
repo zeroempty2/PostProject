@@ -25,5 +25,32 @@ public class Post extends TimeStamped {
     private User user;
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+    private Long postLike;
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    public Post(String title, String contents, User user, Long categoryId){
+        this.title = title;
+        this.contents = contents;
+        this.writer = user.getUsername();
+        this.user = user;
+        this.postLike = 0L;
+        this.categoryId = categoryId;
+    }
+
+    public void update(String title, String contents, Long categoryId){
+        this.title = title;
+        this.contents = contents;
+        this.categoryId = categoryId;
+    }
+    public void plusLike(){
+        this.postLike += 1;
+    }
+    public void minusLike(){
+        this.postLike -= 1;
+    }
+    public boolean checkUsernameIsWriter(String username){
+        return this.getWriter().equals(username);
+    }
 
 }
