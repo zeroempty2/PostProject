@@ -2,6 +2,7 @@ package com.hannunpalzi.postproject.controller;
 
 import com.hannunpalzi.postproject.dto.CategoryRequestDto;
 import com.hannunpalzi.postproject.dto.CategoryListResponseDto;
+import com.hannunpalzi.postproject.dto.CategoryResponseDto;
 import com.hannunpalzi.postproject.dto.StatusResponseDto;
 import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.service.CategoryService;
@@ -24,6 +25,11 @@ public class CategoryController {
     @GetMapping("/categories")
     public List<CategoryListResponseDto> getCategoryList() {
         return categoryService.getCategoryList();
+    }
+
+    @GetMapping("/categories/{categoryId}")
+    public List<CategoryResponseDto> getChildrenCategories(@PathVariable Long categoryId) {
+        return categoryService.getChildrenCategory(categoryId);
     }
 
     @Secured(UserRoleEnum.Authority.ADMIN)

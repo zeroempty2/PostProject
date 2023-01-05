@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 
 @Entity
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Max(value = 2, message = "카테고리 계층은 최대 3까지 가능합니다.")
     @Column(nullable = false)
     private int layer = 0;
 

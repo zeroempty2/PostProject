@@ -26,6 +26,14 @@ public class CategoryService {
         return responseDtoList;
     }
 
+    public List<CategoryResponseDto> getChildrenCategory(Long categoryId) {
+        Category category = categoryRepository.findByCategoryId(categoryId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 카테고리입니다.")
+        );
+        List<Category> childrenCategoryList = categoryRepository.getCategoriesByParent(category.getName());
+        return childrenCategoryList.stream().map(childrenCategory -> new CategoryResponseDto(childrenCategory)).collect(Collectors.toList());
+    }
+
     public CategoryResponseDto createCategory(CategoryRequestDto requestDto) {
         Optional<Category> found = categoryRepository.findByName(requestDto.getName());
         if (found.isPresent()) throw new IllegalArgumentException("중복된 카테고리명이 존재합니다.");

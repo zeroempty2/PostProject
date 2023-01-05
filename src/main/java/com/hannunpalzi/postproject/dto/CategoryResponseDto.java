@@ -1,7 +1,9 @@
 package com.hannunpalzi.postproject.dto;
 
 import com.hannunpalzi.postproject.entity.Category;
+import lombok.Getter;
 
+@Getter
 public class CategoryResponseDto {
     private Long categoryId;
     private String name;
