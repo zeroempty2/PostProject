@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,7 +51,13 @@ public class PostController {
 
     @ApiOperation(value = "게시글 전체 조회", notes = "게시글을 전부 조회한다.")
     @GetMapping("/posts")
-    public List<PostResponseDto> getTotalPostsList() { return postService.getTotalPostsList();}
+    public List<PostResponseDto> getTotalPostsList(
+             @RequestParam int page,
+             @RequestParam int size,
+             @RequestParam String sortBy,
+             @RequestParam boolean isAsc
+    )
+    { return postService.getTotalPostsList(page-1, size, sortBy,isAsc);}
 
     //게시글 수정 (일반유저)
     @ApiImplicitParam(name = "postId", value = "게시글 id", dataTypeClass = Integer.class,example="1")

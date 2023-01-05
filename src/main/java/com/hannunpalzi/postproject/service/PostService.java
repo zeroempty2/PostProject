@@ -6,9 +6,13 @@ import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.jwtUtil.JwtUtil;
 import com.hannunpalzi.postproject.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,12 +64,12 @@ public class PostService {
 
     //전체 게시글 조회
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getTotalPostsList() {
-        List<Post> totalPostsList = postRepository.findAllByOrderByModifiedAtDesc();
-        return totalPostsList.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-
+    public List<PostResponseDto> getTotalPostsList(int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        List<Post> totalPostsList = postRepository.findAllByOrderByModifiedAtDesc(pageable);
+        return totalPostsList.stream().map(PostResponseDto::new).collect(Collectors.toList());
     }
 
     // 게시글 수정 (일반유저)
