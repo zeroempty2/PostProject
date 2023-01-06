@@ -57,8 +57,12 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public void delete(@RequestBody UserDeleteRequestDto requestDto, @PathVariable Long userId){
+    public ResponseEntity<StatusResponseDto> delete(@RequestBody UserDeleteRequestDto requestDto, @PathVariable Long userId){
         userService.delete(requestDto,userId);
+        StatusResponseDto statusResponseDto = new StatusResponseDto(HttpStatus.OK.value(), "삭제 성공");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+        return new ResponseEntity<>(statusResponseDto, headers, HttpStatus.OK);
     }
 }
 
