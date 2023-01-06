@@ -4,7 +4,6 @@ import com.hannunpalzi.postproject.dto.CategoryRequestDto;
 import com.hannunpalzi.postproject.dto.CategoryListResponseDto;
 import com.hannunpalzi.postproject.dto.CategoryResponseDto;
 import com.hannunpalzi.postproject.dto.StatusResponseDto;
-import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
@@ -70,7 +68,7 @@ public class CategoryController {
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 
-    @Secured(UserRoleEnum.Authority.ADMIN)
+
     @ApiOperation(value = "카테고리 삭제", notes = "카테고리를 삭제한다.")
     @ApiImplicitParam(name = "categoryId", value = "카테고리 id", dataTypeClass = Integer.class,example="1")
     @DeleteMapping("/categories/{categoryId}")

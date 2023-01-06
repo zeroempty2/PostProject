@@ -43,7 +43,8 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .antMatchers(HttpMethod.GET, "/categories/**","/posts/**");
     }
 
     @Bean
@@ -65,10 +66,10 @@ public class WebSecurityConfig {
                         /* swagger v3 */
                         "/v3/api-docs/**",
                         "/swagger-ui/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/users/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                .antMatchers("/categories/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/categories/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/categories/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/categories/**").hasAnyRole("ADMIN")
                 .antMatchers("/admin/posts/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService,refreshJwt,userRepository), UsernamePasswordAuthenticationFilter.class);
