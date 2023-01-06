@@ -5,7 +5,6 @@ import com.hannunpalzi.postproject.entity.User;
 import com.hannunpalzi.postproject.entity.UserRoleEnum;
 import com.hannunpalzi.postproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,10 +69,9 @@ public class UserService {
     }
     @Transactional
     public void delete(UserDeleteRequestDto requestDto, Long userId){
-        String username = requestDto.getUsername();
         String password = requestDto.getPassword();
 
-        User user = userRepository.findByUsername(username).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
         );
         if (!passwordEncoder.matches(password, user.getPassword())) {
