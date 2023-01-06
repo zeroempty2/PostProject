@@ -4,7 +4,8 @@
 ___
 [![My Skills](https://skillicons.dev/icons?i=java,spring,idea,git,github)](https://skillicons.dev)
 
-### Notion TeamSpace :https://www.notion.so/A-8-8-Spring-bca45aca29234317b2571fc0ed1c90a5 (노션에서 프로젝트 상세 확인 가능합니다)
+### Notion TeamSpace :https://www.notion.so/A-8-8-Spring-bca45aca29234317b2571fc0ed1c90a5   
+(위 노션에서 프로젝트 상세내용 확인 가능합니다)
 ___
 개발환경
 Java17
