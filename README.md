@@ -4,7 +4,7 @@
 ___
 [![My Skills](https://skillicons.dev/icons?i=java,spring,idea,git,github)](https://skillicons.dev)
 
-### Notion TeamSpace :https://mountainous-march-11f.notion.site/f0acd39deaa94413a8d2e5ecb4372393?v=3f5e74eca5ab4ca6aeba65de146c2e7f
+### Notion TeamSpace :https://www.notion.so/A-8-8-Spring-bca45aca29234317b2571fc0ed1c90a5 (노션에서 프로젝트 상세 확인 가능합니다)
 ___
 개발환경
 Java17
@@ -14,11 +14,11 @@ ___
 
 ### A반 8조 (한눈8지말조)
 #### 팀장 : 
-- 이영빈
+- 이●빈
 #### 팀원 : 
-- 조운
-- 진용재
-- 한정규
+- 조●
+- 진●재
+- 한●규
 
 ### 요구사항
 ### 0. `Spring Security` 적용하기
@@ -118,15 +118,3 @@ ___
 
 ## API 명세서
  http://localhost:8080/swagger-ui/index.html
-### UserController
-| 기능       | Method | URL           | request                                                                                    | response                                                    | request header | response header             |     |
-|----------|--------|---------------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------|----------------|-----------------------------|-----|
-| 회원가입     | Post   | /users/signup | {<br/>"username":"username",<br/>"password":"password"<br/>}                               | {<br/>"statusCode":200,<br/>"statusMessage":회원가입 성공"<br/>}  |                |                             |     |
-| 관리자 회원가입 | Post   | /admin/signup | {<br/>"username":"username",<br/>"password":"password"<br/>"adminToken":"adminToken"<br/>} | {<br/>"statusCode":200,<br/>"statusMessage":"회원가입 성공"<br/>} |                |                             |     |
-| 로그인      | Post   | /users/login  | {<br/>"username":"username",<br/>"password":"password"<br/>}                               | {<br/>"statusCode":200,<br/>"statusMessage":"로그인 성공"         |                | Authorization: Bearer 무작위생성 |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
-|          |        |               |                                                                                            |                                                             |                |                             |     |
