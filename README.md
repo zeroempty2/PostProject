@@ -118,4 +118,4 @@ https://www.erdcloud.com/d/4gkGtSs6r3yHCtHF7
 ___
 
 ## API 명세서
- http://localhost:8080/swagger-ui/index.html
+ http://localhost:8080/swagger-ui/index.html (구동시 동작합니다. API 명세 요약본은 노션에서 확인 가능)
